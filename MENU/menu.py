@@ -1,6 +1,7 @@
 from CRUD.crud import *
 from CRUD.encripteitor import encode, decode
 from CONEX.conex import conex
+from CRUD.curdLibro import *
 conection = conex()
 
 
@@ -34,6 +35,7 @@ class Menu:
                     print("")
                     if opcion == "1":
                         print("funcion 1")
+                        print(listar_libros())
                         break
                     elif opcion == "2":
                         print("funcion 2") 

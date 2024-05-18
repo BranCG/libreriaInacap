@@ -1,6 +1,6 @@
 from CONEX.conex import conex
 from datetime import datetime
-from CLASES.ESTADO import Estado
+from CLASES import Estado
 
 def insertar_estado(estado):
     conn = conex()
