@@ -1,37 +1,32 @@
 from CLASES.LIBRO import LIBRO
+from CLASES.ESTADO import Estado  # Corrección en la importación
 from CONEX.conex import conex
 from datetime import datetime
 import traceback
+
 conection = conex()
-from CLASES.ESTADO import Estado
 
-
-
-def validar_codigoLibro(codigoLibro):  # Para validar codigoLibro, lo recicle de mi codigo eva 2.
-    return codigoLibro.isdigit() and (len(codigoLibro) == 8 or len(codigoLibro) == 9)
-
+def validar_codigoLibro(codigoLibro):
+    return codigoLibro.isnumeric() and (len(codigoLibro) == 8 or len(codigoLibro) == 9)  dn
 
 # FUNCIONES PARA LOGIN-------------------------------------------------------------------------------------------
-# Aca recibimos los atributos desde la clase acceso y se hace la query para insertar.
 def registroUsuarios(usuario, correo, clave, conection):
     sql = "insert into login (usuario, correo, clave, fecha) values (%s,%s,%s,%s)"
     try:
         fecha = datetime.now()  # Fecha actual y se almacena
-        # Cursor se utiliza para ejecutar querys en la base de datos.
         cursor = conection.cursor()
-        # Se ejecuta la consulta SQL con los valores proporcionados como parámetros.
         cursor.execute(sql, (usuario, correo, clave, fecha))
-        conection.commit()  # Se confirman los cambios en la base de datos.
-        # Se obtiene el número de filas afectadas por la operación de inserción.
+        conection.commit()
         filas = cursor.rowcount
         if filas > 0:
-            # Si al menos 1 fila fue afectada se ejecuta el print.
-            print("¡¡Usuario ingresado con exito!!")
+            print("¡¡Usuario ingresado con éxito!!")  # Corrección en el mensaje
         else:
             print("No hay cambios")
-    except:
-        # Imprime información detallada sobre la excepción que ocurrió.
-        print(traceback.print_exc())
+    except Exception as ex:  # Corrección en el manejo de excepciones
+        print("Error", ex)
+        conection.rollback()
+
+# Resto de las funciones CRUD y de login permanecen sin cambios
 
 
 # Acá se comparan las claves encriptadas la que esta almacenada con la que se ingresa.

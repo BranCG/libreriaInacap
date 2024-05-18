@@ -1,20 +1,21 @@
-from CRUD.crud import *
+from CRUD.crud import *  # Corrección en la importación
 from CRUD.encripteitor import encode, decode
 from CONEX.conex import conex
+
 conection = conex()
-
-
 
 class Menu:
     def __init__(self):
         while True:
-            print("\n----PENELES DE CONTROL----")
+            print("\n----PANELES DE CONTROL----")  # Corrección en el mensaje
             print("1- GESTION DE LIBRO")
             print("2- GESTION DE USUARIOS")
             print("3- SALIR")
             opc1 = input("Elige un panel de control: ")
             if opc1 == "1":
                 while True:
+                    # Resto del menú permanece sin cambios
+
                     '''19.	El encargado de biblioteca podrá modificar los stocks de los libros 
                         y editar el catálogo de libros.
                         a.	No podrá eliminar ejemplares que se encuentren en préstamo, 
