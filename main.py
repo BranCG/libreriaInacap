@@ -11,7 +11,6 @@ from CLASES.acceso import Acceso
 # pass: 1234
 
 while True:
-
     print("\n----Login----")
     print("1- Registrar usuario")
     print("2- Login ")

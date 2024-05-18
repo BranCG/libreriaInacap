@@ -33,10 +33,11 @@ class Menu:
                     opcion = input("\nIngresa la opcion que desees ejecutar: ")
                     print("")
                     if opcion == "1":
-                        print("funcion 1")
+                        print('LISTADO DE LIBROS\n')
+                        (conection)
                         break
                     elif opcion == "2":
-                        print("funcion 2") 
+                        insertar_libro()
                         break
                     elif opcion == "3":
                         print("funcion 3")  
@@ -55,7 +56,9 @@ class Menu:
                     print("1- REALIZAR PRESTAMO")
                     print("2- RENOVACION")
                     print("3- MULTAS")
-                    print("4- HISTORIAL DE USUARIO POR RUT")
+                    print("4- HISTORIAL DE USUARIO POR codigoLibro")
+                    print("5- importar faker")
+                    print("6- exportar faker")
                     print("0- Salir")
 
                     opcion = input("\nIngresa la opcion que desees ejecutar: ")
@@ -63,7 +66,7 @@ class Menu:
                     if opcion == "1":
                         print('''1.	Se deberá poder registrar la fecha de préstamo de un ejemplar de un libro, identificando claramente si el usuario solicitante es un docente o un estudiante.
                         2.	Se deberá asociar la fecha de préstamo y mostrar la fecha de devolución del texto cuando se realiza la asignación del libro.
-                        3.	El código del texto deberá ser ingresado al sistema de préstamos, así como el RUT del usuario solicitante. Con esto el sistema deberá identificar si el usuario corresponde a un docente o un estudiante.
+                        3.	El código del texto deberá ser ingresado al sistema de préstamos, así como el codigoLibro del usuario solicitante. Con esto el sistema deberá identificar si el usuario corresponde a un docente o un estudiante.
                         4.	En caso de que quien solicita es un alumno, el sistema proveerá de hasta 7 días máximo el préstamo del ejemplar.
                         5.	En caso de que quien solicita es un docente, el sistema proveerá un mínimo de 7 días de préstamo y un máximo de 20 días.
                         6.	Los días de préstamo son corridos, es decir, no corresponden a días hábiles, sino que considera días sábado y domingo.
@@ -85,18 +88,18 @@ class Menu:
                     elif opcion == "3":
                         print('''1.	No se podrán prestar libros si el usuario posee multas impagas.
                             2. Por cada día de retraso en la entrega de un libro, se cobrará una multa de $1.000 independiente del tipo de usuario que solicita.
-                            3. Para realizar el pago de la multa, se deberá proveer el RUT del usuario que la posee, y registrar el cobro en el sistema.
+                            3. Para realizar el pago de la multa, se deberá proveer el codigoLibro del usuario que la posee, y registrar el cobro en el sistema.
                             ''')
                         break
                     elif opcion == "4":
                         print('''17.La interacción de los usuarios alumnos y docente será externa a la plataforma y
                             sólo el usuario encargado de biblioteca podrá realizar la asignación de los libros a los usuarios.
 
-                            18.	El encargado de biblioteca podrá buscar a los usuarios alumnos y profesores a través de una interfaz,
-                            en donde a través del RUT, obtendrá la siguiente información:
+                            18.	El encargado de biblioteca podrá buscar a los usuarios alumnos y libroes a través de una interfaz,
+                            en donde a través del codigoLibro, obtendrá la siguiente información:
                                 a.	Información personal, tales como:
                                     i.	Nombre.
-                                    ii.	RUT.
+                                    ii.	codigoLibro.
                                     iii.	Datos de contacto.
                                 b.	Últimos libros en préstamo
                                     i.	Título.
@@ -109,6 +112,12 @@ class Menu:
                                     iii.	Monto de la deuda.
                             ''')
                         break
+                    elif opcion == "5":
+                        print('Vamos a importar DATOS FAKER desde JSON hacia la BD\n')
+                        importarFaker()
+                    elif opcion == "6":
+                        print('Vamos a exportar DATOS FAKER a JSON\n ')
+                        prepararExportarFaker()
                     else:
                         print("saliste")
                         break

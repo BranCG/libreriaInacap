@@ -1,11 +1,16 @@
+from CLASES.LIBRO import Libro
 from CONEX.conex import conex
 from datetime import datetime
 import traceback
 conection = conex()
+from faker import Faker
+import json
 
 
-def validar_rut(rut):  # Para validar rut, lo recicle de mi codigo eva 2.
-    return rut.isdigit() and (len(rut) == 8 or len(rut) == 9)
+
+
+def validar_codigoLibro(codigoLibro):  # Para validar codigoLibro, lo recicle de mi codigo eva 2.
+    return codigoLibro.isdigit() and (len(codigoLibro) == 8 or len(codigoLibro) == 9)
 
 
 # FUNCIONES PARA LOGIN-------------------------------------------------------------------------------------------
@@ -48,3 +53,75 @@ def buscarClave(usuario, conection):  # Busca la clave en la base de datos .
 
     except:
         print(traceback.print_exc())
+
+
+def buscarcodigoLibro(codigoLibro, conection):
+    sql = "SELECT codigoLibro from libro WHERE codigoLibro = %s"
+
+    try:
+        cur = conection.cursor()
+        cur.execute(sql, (codigoLibro,))
+        result = cur.fetchone()
+
+        if result is not None:
+            return True
+        else:
+            pass
+
+    except:
+        print("")
+
+# CRUD LIBROS-----------------------------------------------------------------------------------------
+def insertar_libro(libro):
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('''
+    INSERT INTO libros (titulo, autor, anioPublicacion) VALUES (%s, %s, %s)
+    ''', (libro.titulo, libro.autor, libro.anio_publicacion))
+    conn.commit()
+    libro.codigo_libro = cursor.lastrowid
+    conn.close()
+
+
+def obtener_libro(codigo_libro):
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM libros WHERE codigoLibro = %s', (codigo_libro,))
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return Libro(codigo_libro=row[0], titulo=row[1], autor=row[2], anio_publicacion=row[3])
+    return None
+
+
+def editar_libro(libro):
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('''
+    UPDATE libros SET titulo = %s, autor = %s, anioPublicacion = %s WHERE codigoLibro = %s
+    ''', (libro.titulo, libro.autor, libro.anio_publicacion, libro.codigo_libro))
+    conn.commit()
+    conn.close()
+
+
+def eliminar_libro(codigo_libro):
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM libros WHERE codigoLibro = %s',
+                (codigo_libro,))
+    conn.commit()
+    conn.close()
+
+
+def listar_libros():
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM libros')
+    rows = cursor.fetchall()
+    conn.close()
+    libros = []
+    for row in rows:
+        libros.append(
+            Libro(codigo_libro=row[0], titulo=row[1], autor=row[2], anio_publicacion=row[3]))
+    return libros
