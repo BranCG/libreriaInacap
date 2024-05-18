@@ -28,12 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `deudas` (
-  `idDeuda` int(11) NOT NULL,
-  `codigoLibroUsuario` varchar(15) NOT NULL,
-  `idPrestamoLibro` int(11) NOT NULL,
-  `diasRetraso` int(11) DEFAULT NULL,
-  `montoDeuda` int(11) DEFAULT NULL,
-  `idEstado` int(11) NOT NULL
+`idDeuda` int(11) NOT NULL,
+`RUTUsuario` varchar(15) DEFAULT NULL,
+`tituloLibro` varchar(255) DEFAULT NULL,
+`diasRetraso` int(11) DEFAULT NULL,
+`montoDeuda` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -62,10 +61,11 @@ INSERT INTO `estados` (`idestados`, `estado`) VALUES
 --
 
 CREATE TABLE `libros` (
-  `codigoLibro` int(11) NOT NULL,
-  `codigoLibro` varchar(255) NOT NULL,
-  `autor` varchar(255) DEFAULT NULL,
-  `anioPublicacion` int(11) DEFAULT NULL
+`codigoLibro` int(11) NOT NULL,
+`titulo` varchar(255) DEFAULT NULL,
+`autor` varchar(255) DEFAULT NULL,
+`anioPublicacion` int(11) DEFAULT NULL,
+`estado` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -95,13 +95,12 @@ INSERT INTO `login` (`usuario`, `correo`, `clave`, `fecha`) VALUES
 --
 
 CREATE TABLE `prestamos` (
-  `idPrestamo` int(11) NOT NULL,
-  `codigoLibro` int(11) NOT NULL,
-  `codigoLibroUsuario` varchar(15) NOT NULL,
-  `fechaPrestamo` date NOT NULL,
-  `fechaVencimiento` date NOT NULL,
-  `fechaDevolucion` date DEFAULT NULL,
-  `idEstado` int(50) DEFAULT NULL
+`idPrestamo` int(11) NOT NULL,
+`codigoLibro` int(11) DEFAULT NULL,
+`RUTUsuario` varchar(15) DEFAULT NULL,
+`fechaPrestamo` date DEFAULT NULL,
+`fechaDevolucion` date DEFAULT NULL,
+`estadoPrestamo` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -132,35 +131,14 @@ CREATE TABLE `stocklibros` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipousuarios`
---
-
-CREATE TABLE `tipousuarios` (
-  `idTipoUsuario` int(11) NOT NULL,
-  `TipoUsuario` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tipousuarios`
---
-
-INSERT INTO `tipousuarios` (`idTipoUsuario`, `TipoUsuario`) VALUES
-(1, 'Alumno'),
-(2, 'libro');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `usuarios`
 --
 
 CREATE TABLE `usuarios` (
-  `codigoLibro` varchar(15) NOT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
-  `idTipoUsuario` int(11) DEFAULT NULL,
-  `Contacto` varchar(255) DEFAULT NULL,
-  `correo` varchar(255) NOT NULL,
-  `idEstado` int(11) NOT NULL
+`RUT` varchar(15) NOT NULL,
+`nombre` varchar(255) DEFAULT NULL,
+`tipoUsuario` varchar(50) DEFAULT NULL,
+`Contacto` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -171,10 +149,8 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `deudas`
 --
 ALTER TABLE `deudas`
-  ADD PRIMARY KEY (`idDeuda`),
-  ADD KEY `codigoLibroUsuario` (`codigoLibroUsuario`),
-  ADD KEY `deuda_prestamo_fk` (`idPrestamoLibro`),
-  ADD KEY `Deudas_estado_1` (`idEstado`);
+ADD PRIMARY KEY (`idDeuda`),
+ADD KEY `RUTUsuario` (`RUTUsuario`);
 
 --
 -- Indices de la tabla `estados`
@@ -192,10 +168,9 @@ ALTER TABLE `libros`
 -- Indices de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  ADD PRIMARY KEY (`idPrestamo`),
-  ADD KEY `codigoLibro` (`codigoLibro`),
-  ADD KEY `codigoLibroUsuario` (`codigoLibroUsuario`),
-  ADD KEY `prestamos_estado_fk1` (`idEstado`);
+ADD PRIMARY KEY (`idPrestamo`),
+ADD KEY `codigoLibro` (`codigoLibro`),
+ADD KEY `RUTUsuario` (`RUTUsuario`);
 
 --
 -- Indices de la tabla `renovaciones`
@@ -221,25 +196,7 @@ ALTER TABLE `tipousuarios`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`codigoLibro`),
-  ADD KEY `tiposusuairo_fk` (`idTipoUsuario`),
-  ADD KEY `usaurio_estado_fk` (`idEstado`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `estados`
---
-ALTER TABLE `estados`
-  MODIFY `idestados` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `tipousuarios`
---
-ALTER TABLE `tipousuarios`
-  MODIFY `idTipoUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ADD PRIMARY KEY (`RUT`);
 
 --
 -- Restricciones para tablas volcadas
@@ -249,18 +206,27 @@ ALTER TABLE `tipousuarios`
 -- Filtros para la tabla `deudas`
 --
 ALTER TABLE `deudas`
-  ADD CONSTRAINT `Deudas_estado_1` FOREIGN KEY (`idEstado`) REFERENCES `estados` (`idestados`),
-  ADD CONSTRAINT `Deudas_ibfk_1` FOREIGN KEY (`codigoLibroUsuario`) REFERENCES `usuarios` (`codigoLibro`),
-  ADD CONSTRAINT `deuda_prestamo_fk` FOREIGN KEY (`idPrestamoLibro`) REFERENCES `prestamos` (`idPrestamo`),
-  ADD CONSTRAINT `deudas_Libro_fk` FOREIGN KEY (`idPrestamoLibro`) REFERENCES `libros` (`codigoLibro`);
+ADD CONSTRAINT `Deudas_ibfk_1` FOREIGN KEY (`RUTUsuario`) REFERENCES `usuarios` (`RUT`);
+
+--
+-- Filtros para la tabla `historialprestamos`
+--
+ALTER TABLE `historialprestamos`
+ADD CONSTRAINT `HistorialPrestamos_ibfk_1` FOREIGN KEY (`RUTUsuario`) REFERENCES `usuarios` (`RUT`),
+ADD CONSTRAINT `HistorialPrestamos_ibfk_2` FOREIGN KEY (`codigoLibro`) REFERENCES `libros` (`codigoLibro`);
+
+--
+-- Filtros para la tabla `multas`
+--
+ALTER TABLE `multas`
+ADD CONSTRAINT `Multas_ibfk_1` FOREIGN KEY (`RUTUsuario`) REFERENCES `usuarios` (`RUT`);
 
 --
 -- Filtros para la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  ADD CONSTRAINT `Prestamos_ibfk_1` FOREIGN KEY (`codigoLibro`) REFERENCES `libros` (`codigoLibro`),
-  ADD CONSTRAINT `Prestamos_ibfk_2` FOREIGN KEY (`codigoLibroUsuario`) REFERENCES `usuarios` (`codigoLibro`),
-  ADD CONSTRAINT `prestamos_estado_fk1` FOREIGN KEY (`idEstado`) REFERENCES `estados` (`idestados`);
+ADD CONSTRAINT `Prestamos_ibfk_1` FOREIGN KEY (`codigoLibro`) REFERENCES `libros` (`codigoLibro`),
+ADD CONSTRAINT `Prestamos_ibfk_2` FOREIGN KEY (`RUTUsuario`) REFERENCES `usuarios` (`RUT`);
 
 --
 -- Filtros para la tabla `renovaciones`
