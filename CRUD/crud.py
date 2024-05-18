@@ -1,4 +1,4 @@
-from CLASES.LIBRO import LIBRO
+from CLASES.LIBRO import Libro
 from CLASES.ESTADO import Estado  # Corrección en la importación
 from CONEX.conex import conex
 from datetime import datetime
@@ -7,7 +7,7 @@ import traceback
 conection = conex()
 
 def validar_codigoLibro(codigoLibro):
-    return codigoLibro.isnumeric() and (len(codigoLibro) == 8 or len(codigoLibro) == 9)  dn
+    return codigoLibro.isnumeric() and (len(codigoLibro) == 8 or len(codigoLibro) == 9)  
 
 # FUNCIONES PARA LOGIN-------------------------------------------------------------------------------------------
 def registroUsuarios(usuario, correo, clave, conection):
