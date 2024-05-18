@@ -6,7 +6,7 @@ def insertar_libro(libro):
     conn = conex()
     cursor = conn.cursor()
     cursor.execute('''
-    INSERT INTO libro (titulo, autor, anio_publicacion) VALUES (%s, %s, %s)
+    INSERT INTO libros (titulo, autor, anioPublicacion) VALUES (%s, %s, %s)
     ''', (libro.titulo, libro.autor, libro.anio_publicacion))
     conn.commit()
     libro.codigo_libro = cursor.lastrowid
@@ -15,7 +15,7 @@ def insertar_libro(libro):
 def obtener_libro(codigo_libro):
     conn = conex()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM libro WHERE codigo_libro = %s', (codigo_libro,))
+    cursor.execute('SELECT * FROM libros WHERE codigoLibro = %s', (codigo_libro,))
     row = cursor.fetchone()
     conn.close()
     if row:
@@ -26,7 +26,7 @@ def editar_libro(libro):
     conn = conex()
     cursor = conn.cursor()
     cursor.execute('''
-    UPDATE libro SET titulo = %s, autor = %s, anio_publicacion = %s WHERE codigo_libro = %s
+    UPDATE libros SET titulo = %s, autor = %s, anioPublicacion = %s WHERE codigoLibro = %s
     ''', (libro.titulo, libro.autor, libro.anio_publicacion, libro.codigo_libro))
     conn.commit()
     conn.close()
@@ -35,6 +35,18 @@ def editar_libro(libro):
 def eliminar_libro(codigo_libro):
     conn = conex()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM libro WHERE codigo_libro = %s', (codigo_libro,))
+    cursor.execute('DELETE FROM libros WHERE codigoLibro = %s', (codigo_libro,))
     conn.commit()
     conn.close()
+
+def listar_libros():
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM libros')
+    rows = cursor.fetchall()
+    conn.close()
+    libros = []
+    for row in rows:
+        libros.append(Libro(codigo_libro=row[0], titulo=row[1], autor=row[2], anio_publicacion=row[3]))
+    return libros
+
