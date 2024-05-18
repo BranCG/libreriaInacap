@@ -1,4 +1,4 @@
-from CLASES.LIBRO import Libro
+from CLASES.LIBRO import LIBRO
 from CONEX.conex import conex
 from datetime import datetime
 import traceback
