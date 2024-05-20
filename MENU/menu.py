@@ -1,8 +1,6 @@
-# MENU/menu.py
 from CRUD.crud import *
-from CONEX.conex import conex
 from CLASES.LIBRO import Libro
-conection = conex()
+
 
 class Menu:
     def __init__(self):
@@ -32,12 +30,15 @@ class Menu:
                     elif opcion == "2":
                         titulo = input("Ingrese el título del libro: ")
                         autor = input("Ingrese el autor del libro: ")
-                        anio_publicacion = input("Ingrese el año de publicación del libro: ")
-                        nuevo_libro = Libro(None, titulo, autor, anio_publicacion)
+                        anio_publicacion = input(
+                            "Ingrese el año de publicación del libro: ")
+                        nuevo_libro = Libro(
+                            None, titulo, autor, anio_publicacion)
                         nuevo_libro.guardar()
                         print("Libro agregado con éxito.")
                     elif opcion == "3":
-                        codigo_libro = input("Ingrese el código del libro a eliminar: ")
+                        codigo_libro = input(
+                            "Ingrese el código del libro a eliminar: ")
                         libro = Libro.buscar(codigo_libro)
                         if libro:
                             libro.eliminar()
@@ -45,12 +46,15 @@ class Menu:
                         else:
                             print("El libro no existe.")
                     elif opcion == "4":
-                        codigo_libro = input("Ingrese el código del libro a actualizar: ")
+                        codigo_libro = input(
+                            "Ingrese el código del libro a actualizar: ")
                         libro = Libro.buscar(codigo_libro)
                         if libro:
-                            titulo = input("Ingrese el nuevo título del libro: ")
+                            titulo = input(
+                                "Ingrese el nuevo título del libro: ")
                             autor = input("Ingrese el nuevo autor del libro: ")
-                            anio_publicacion = input("Ingrese el nuevo año de publicación del libro: ")
+                            anio_publicacion = input(
+                                "Ingrese el nuevo año de publicación del libro: ")
                             libro.titulo = titulo
                             libro.autor = autor
                             libro.anio_publicacion = anio_publicacion
@@ -78,7 +82,8 @@ class Menu:
                     elif opcion == "3":
                         print("Funcionalidad de multas")
                     elif opcion == "4":
-                        print("Funcionalidad de historial de usuario por código de libro")
+                        print(
+                            "Funcionalidad de historial de usuario por código de libro")
                     elif opcion == "5":
                         break
                     else:
