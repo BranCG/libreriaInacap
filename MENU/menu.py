@@ -1,5 +1,8 @@
 from CRUD.crud import *
+from CONEX.conex import conex
 from CLASES.LIBRO import Libro
+
+conection = conex()
 
 
 class Menu:
@@ -24,6 +27,7 @@ class Menu:
                         libros = Libro.listar()
                         if libros:
                             for libro in libros:
+                                # Este uso de print mostrará la representación en cadena definida en __str__
                                 print(libro)
                         else:
                             print("No hay libros registrados.")

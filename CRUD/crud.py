@@ -64,7 +64,7 @@ def insertar_libro(libro):
     cursor = conn.cursor()
     cursor.execute('''
     INSERT INTO libros (titulo, autor, anioPublicacion) VALUES (%s, %s, %s)
-    ''', (libro[0], libro[1], libro[2]))  # Corregido para manejar una tupla de libro
+    ''', (libro.titulo, libro.autor, libro.anio_publicacion))
     conn.commit()
     libro.codigo_libro = cursor.lastrowid
     conn.close()
