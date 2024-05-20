@@ -1,3 +1,4 @@
+from CLASES.USUARIO import Usuario
 from CLASES.LIBRO import Libro
 from CLASES.ESTADO import Estado
 from CONEX.conex import conex
@@ -96,7 +97,7 @@ def eliminar_libro(codigo_libro):
     conn = conex()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM libros WHERE codigoLibro = %s',
-                   (codigo_libro,))
+                (codigo_libro,))
     conn.commit()
     conn.close()
 
@@ -148,3 +149,34 @@ def listar_estados():
     for row in rows:
         estados.append(Estado(idEstado=row[0], estado=row[1]))
     return estados
+
+
+#PRESTAMO-------------------
+
+
+def realizar_prestamo(codigo_usuario, codigo_libro, fecha_prestamo, fecha_devolucion):
+    conn = conex()
+    cursor = conn.cursor()
+    cursor.execute('''
+    INSERT INTO prestamos (IdTipoUsuario, codigoLibro, fechaPrestamo, fechaDevolucion) VALUES (%s, %s, %s, %s)
+    ''', (codigo_usuario, codigo_libro, fecha_prestamo, fecha_devolucion))
+    conn.commit()
+    conn.close()
+
+
+def validar_prestamo(codigo_usuario, codigo_libro):
+    usuario = Usuario.obtener_usuario(codigo_usuario)
+    if not usuario:
+        return False, "Usuario no encontrado."
+
+    if Usuario.tiene_retrasos(codigo_usuario):
+        return False, "El usuario tiene préstamos atrasados y no puede realizar nuevos préstamos."
+
+    if usuario.tipo_usuario == 'estudiante':
+        dias_max_prestamo = 7
+    elif usuario.tipo_usuario == 'docente':
+        dias_max_prestamo = 20
+    else:
+        return False, "Tipo de usuario no válido."
+
+    return True, dias_max_prestamo

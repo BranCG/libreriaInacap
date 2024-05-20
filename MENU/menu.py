@@ -1,6 +1,8 @@
 from CRUD.crud import *
 from CONEX.conex import conex
 from CLASES.LIBRO import Libro
+from CLASES.USUARIO import Usuario
+import datetime
 
 conection = conex()
 
@@ -80,7 +82,22 @@ class Menu:
                     print("5- Salir")
                     opcion = input("\nIngresa la opción que desees ejecutar: ")
                     if opcion == "1":
-                        print("Funcionalidad de préstamo")
+                        codigo_usuario = input(
+                            "Ingrese el código del usuario: ")
+                        codigo_libro = input("Ingrese el código del libro: ")
+                        validacion, resultado = validar_prestamo(
+                            codigo_usuario, codigo_libro)
+                        if not validacion:
+                            print(resultado)
+                        else:
+                            dias_max_prestamo = resultado
+                            fecha_prestamo = datetime.date.today()
+                            fecha_devolucion = fecha_prestamo + \
+                                datetime.timedelta(days=dias_max_prestamo)
+                            realizar_prestamo(
+                                codigo_usuario, codigo_libro, fecha_prestamo, fecha_devolucion)
+                            print(f"Préstamo realizado con éxito. Devolución el {
+                                fecha_devolucion}.")
                     elif opcion == "2":
                         print("Funcionalidad de renovación")
                     elif opcion == "3":
